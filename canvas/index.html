@@ -29,8 +29,21 @@
 </body>
 
 <script type="text/javascript">
+    var canvas = document.getElementById('canvas');
+
+    function draw(){
+        
+        if(canvas.getContext){
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.moveTo(75,50);
+            ctx.lineTo(100,75);
+            ctx.lineTo(100,25);
+            ctx.fill();
+        }
+    }
     function drawRect(){
-        var canvas = document.getElementById('canvas');
+        
         if(canvas.getContext){
             var ctx = canvas.getContext('2d');
 
@@ -43,9 +56,9 @@
         }
     }
 
-    drawRect();
 
-    function draw
+    drawRect();
+    draw();
 </script>
 
 </html>
