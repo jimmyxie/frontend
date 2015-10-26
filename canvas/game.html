@@ -15,36 +15,14 @@
     
     body {
         font-size: 18px;
-        line-height: 0;
-    }
-    
-    #canvas {
-        background-color: #001022;
-    }
-    
-    .btn {
-        position: fixed;
-        width: 100%;
-        bottom: 30px;
-        text-align: center;
-    }
-    .btn span{
-        display: inline-block;
-        margin: 0 10px;
-        width: 100px;
-        line-height: 30px;
-        background: #999;
-        border-radius: 5px;
     }
     </style>
 </head>
 
 <body>
     <canvas id="canvas"></canvas>
-    <div class="btn">
-        <span id="start_btn">start_btn</span>
-        <span id="stop_btn">stop_btn</span>
-    </div>
+    <span id="start_btn">start_btn</span>
+    <span id="stop_btn">stop_btn</span>
 </body>
 <script type="text/javascript">
 'use strict';
@@ -55,10 +33,10 @@ var canvas = document.getElementById('canvas'),
     playRec = [],
     playAnimate;
 
-canvas.width = document.documentElement.clientWidth;
-canvas.height = document.documentElement.clientHeight;
+canvas.width = 1000;
+canvas.height = 500;
 
-function ArrayData(x, y, radius, mass, vX, vY, aX, aY) {
+function ArrayData(x, y, radius, mass,vX, vY, aX, aY) {
     this.x = x;
     this.y = y;
 
@@ -71,23 +49,22 @@ function ArrayData(x, y, radius, mass, vX, vY, aX, aY) {
     this.aX = aX;
     this.aY = aY;
 
-
+    
 }
 
 function randomData() {
-    playRec = [];
     for (var i = 0; i < 30; i++) {
         var x = 20 + Math.random() * (canvas.width - 40);
         var y = 20 + Math.random() * (canvas.height - 40);
         var radius = 5 + Math.random() * 10;
-        var mass = radius / 2;
+        var mass = radius/2;
 
         var vX = Math.random() * 4 - 2;
         var vY = Math.random() * 4 - 2;
 
         var aX = 0;
         var aY = 0;
-        playRec.push(new ArrayData(x, y, radius, mass, vX, vY, aX, aY));
+        playRec.push(new ArrayData(x, y, radius,mass,vX, vY, aX, aY));
     }
 }
 
@@ -124,25 +101,25 @@ function draw() {
                     var vXb = tmpRecB.vX * cosine + tmpRecB.vY * sine;
                     var vYb = tmpRecB.vY * cosine - tmpRecB.vX * sine;
 
-                    var vTotal = vX - vXb;
-                    vX = ((tmpRec.mass - tmpRecB.mass) * vX + 2 * tmpRecB.mass * vXb) / (tmpRec.mass + tmpRecB.mass);
-                    vXb = vTotal + vX;
+                    var vTotal = vX-vXb;
+                    vX = ((tmpRec.mass - tmpRecB.mass)*vX+2*tmpRecB.mass*vXb)/(tmpRec.mass+tmpRecB.mass);
+                    vXb = vTotal+vX;
 
-                    xB = x + tmpRec.radius + tmpRecB.radius;
+                    xB = x + tmpRec.radius+tmpRecB.radius;
 
-                    tmpRec.x = tmpRec.x + (x * cosine - y * sine);
-                    tmpRec.y = tmpRec.y + (y * cosine + x * sine);
+                    tmpRec.x = tmpRec.x+(x*cosine - y*sine);
+                    tmpRec.y = tmpRec.y+(y*cosine + x*sine);
 
-                    tmpRecB.x = tmpRec.x + (xB * cosine - yB * sine);
-                    tmpRecB.y = tmpRec.y + (yB * cosine + xB * sine);
+                    tmpRecB.x = tmpRec.x+(xB*cosine-yB*sine);
+                    tmpRecB.y = tmpRec.y+(yB*cosine+xB*sine);
 
-                    tmpRec.vX = vX * cosine - vY * sine;
-                    tmpRec.vY = vY * cosine + vX * sine;
+                    tmpRec.vX = vX*cosine-vY*sine;
+                    tmpRec.vY = vY*cosine+vX*sine;
 
-                    tmpRecB.vX = vXb * cosine - vYb * sine;
-                    tmpRecB.vY = vYb * cosine + vXb * sine;
+                    tmpRecB.vX = vXb*cosine-vYb*sine;
+                    tmpRecB.vY = vYb*cosine+vXb*sine;
 
-
+                    
                 }
             }
 
@@ -153,7 +130,7 @@ function draw() {
             if (Math.abs(tmpRec.vX) < 10) {
                 tmpRec.vX += tmpRec.aX;
             }
-
+            
             if (Math.abs(tmpRec.vY) < 10) {
                 tmpRec.vY += tmpRec.aY;
             }
@@ -179,7 +156,6 @@ function draw() {
             }
 
             ctx.beginPath();
-            ctx.fillStyle = '#fff';
             ctx.arc(tmpRec.x, tmpRec.y, tmpRec.radius, 0, Math.PI * 2, false);
             ctx.closePath();
             ctx.fill();
@@ -188,10 +164,7 @@ function draw() {
 }
 
 function animate() {
-
-    if(playRec.length===0){
-        randomData();
-    }
+    randomData();
     clearInterval(playAnimate);
 
     playAnimate = setInterval(function() {
